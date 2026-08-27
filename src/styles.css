@@ -1,0 +1,184 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@theme {
+  --color-background: #0c0c0d;
+  --color-foreground: #f2f1ee;
+  --color-card: #141416;
+  --color-card-foreground: #f2f1ee;
+  --color-popover: #161618;
+  --color-popover-foreground: #f2f1ee;
+  --color-primary: #e8e6e1;
+  --color-primary-foreground: #0c0c0d;
+  --color-secondary: #1c1c1f;
+  --color-secondary-foreground: #f2f1ee;
+  --color-muted: #1c1c1f;
+  --color-muted-foreground: #9a9a96;
+  --color-accent: #222226;
+  --color-accent-foreground: #f2f1ee;
+  --color-destructive: #c45c4a;
+  --color-border: rgb(242 241 238 / 0.12);
+  --color-input: rgb(242 241 238 / 0.14);
+  --color-ring: #c8ccd4;
+  --color-die: #ece8de;
+  --color-die-shadow: #d4cfc2;
+  --color-pip: #1a1916;
+  --color-felt: #101012;
+
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.75rem;
+
+  --shadow-border: 0 0 0 1px rgb(242 241 238 / 0.08);
+  --shadow-border-hover: 0 0 0 1px rgb(242 241 238 / 0.14);
+
+  --ease-smooth-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.45, 0, 0.55, 1);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: var(--color-background);
+    color: var(--color-foreground);
+  }
+
+  body {
+    min-height: 100dvh;
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    line-height: 1.5;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+.die-scene {
+  width: var(--die-size, 4.5rem);
+  height: var(--die-size, 4.5rem);
+  perspective: 28rem;
+}
+
+.die-cube {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) rotateZ(var(--rz, 0deg));
+  transition: transform 900ms var(--ease-smooth-out);
+}
+
+.die-cube.is-instant {
+  transition: none;
+}
+
+.die-face {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 0.7rem;
+  background: linear-gradient(145deg, #f7f4ec 0%, var(--color-die) 55%, var(--color-die-shadow) 100%);
+  box-shadow:
+    inset 0 0 0 1px rgb(26 25 22 / 0.1),
+    inset 0 1px 0 rgb(255 255 255 / 0.55);
+  backface-visibility: hidden;
+}
+
+.die-pips {
+  display: grid;
+  width: 72%;
+  height: 72%;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 0.15rem;
+}
+
+.die-pip {
+  width: 28%;
+  aspect-ratio: 1;
+  justify-self: center;
+  align-self: center;
+  border-radius: 999px;
+  background: var(--color-pip);
+  box-shadow: 0 1px 0 rgb(255 255 255 / 0.25);
+}
+
+.die-face-1 {
+  transform: rotateY(0deg) translateZ(calc(var(--die-size, 4.5rem) / 2));
+}
+.die-face-2 {
+  transform: rotateX(90deg) translateZ(calc(var(--die-size, 4.5rem) / 2));
+}
+.die-face-3 {
+  transform: rotateY(90deg) translateZ(calc(var(--die-size, 4.5rem) / 2));
+}
+.die-face-4 {
+  transform: rotateY(-90deg) translateZ(calc(var(--die-size, 4.5rem) / 2));
+}
+.die-face-5 {
+  transform: rotateX(-90deg) translateZ(calc(var(--die-size, 4.5rem) / 2));
+}
+.die-face-6 {
+  transform: rotateY(180deg) translateZ(calc(var(--die-size, 4.5rem) / 2));
+}
+
+.felt-well {
+  background:
+    radial-gradient(120% 80% at 50% 0%, rgb(255 255 255 / 0.035), transparent 55%),
+    var(--color-felt);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.04),
+    inset 0 -1px 0 rgb(0 0 0 / 0.45),
+    var(--shadow-border);
+}
+
+.playhead {
+  background: var(--color-primary);
+  box-shadow: 0 0 12px rgb(232 230 225 / 0.35);
+}
+
+.seq-cell {
+  background: rgb(242 241 238 / 0.06);
+}
+
+.seq-cell.is-on {
+  background: rgb(232 230 225 / 0.72);
+}
+
+.seq-cell.is-accent {
+  background: var(--color-foreground);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .die-cube {
+    transition: none;
+  }
+}
